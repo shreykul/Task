@@ -1,5 +1,6 @@
+import { ImageResponse } from "@/utils/types";
 import { useEffect, useState } from "react";
-import { ImageResponse, fetchImages } from "../services/api/imageService";
+import { fetchImages } from "../services/api/imageService";
 
 export function useImageList(page: number, pageSize: number) {
   const [data, setData] = useState<ImageResponse["images"]>([]);

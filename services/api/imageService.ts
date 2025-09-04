@@ -1,14 +1,5 @@
+import { ImageResponse } from "@/utils/types";
 import httpClient from "../network/httpServices";
-
-
-export interface ImageResponse {
-  images: Array<{
-    id: string;
-    url: string;
-    [key: string]: any;
-  }>;
-  [key: string]: any;
-}
 
 export async function fetchImages(
   page: number,

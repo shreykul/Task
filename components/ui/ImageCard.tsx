@@ -1,0 +1,40 @@
+import { Colors } from '@/constants/Colors'
+import { Fonts } from '@/constants/Fonts'
+import MarginHW from '@/utils/MarginHW'
+import { ImageType } from '@/utils/types'
+import { MaterialIcons } from '@expo/vector-icons'
+import { Image } from 'expo-image'
+import { Skeleton } from 'moti/skeleton'
+import React, { useState } from 'react'
+import { Dimensions, StyleSheet, TouchableOpacity } from 'react-native'
+import { ThemedText } from '../ThemedText'
+import { ThemedView } from '../ThemedView'
+
+const ImageCard = ({ item }: { item: ImageType }) => {
+  const { width } = Dimensions.get('screen')
+  const cardWidth = width / 2 - 15
+  const [loaded, setLoaded] = useState(false)
+  
+  return (
+    <ThemedView style={{ width: cardWidth, margin: 5 }}>
+      <ThemedView style={{ position: 'relative',backgroundColor:'#f0f0f0' }}>
+      <Skeleton show={!loaded} radius={8} width="100%" height={120} colors={['#808080', '#f5f5f5']}>
+        <Image source={{ uri: item.thumbnail_url }} style={Styles.imageStyles} contentFit="cover" onLoadEnd={() => setLoaded(true)}/>
+         </Skeleton>
+        <TouchableOpacity style={Styles.button} onPress={() => console.log('Favorite pressed:', item.id)}>
+          <MaterialIcons name="favorite-border" size={20} color="white" />
+        </TouchableOpacity>
+      </ThemedView>
+      <ThemedText style={Styles.text} numberOfLines={1} ellipsizeMode="tail">
+        {item.name}
+      </ThemedText>
+    </ThemedView>
+  )
+}
+
+export default ImageCard
+const Styles = StyleSheet.create({
+    imageStyles:{width: '100%',height: 120,borderRadius: 8,backgroundColor: '#e1e1e1',},
+    button:{position: 'absolute',top: MarginHW.MarginH8,right: MarginHW.MarginW8,backgroundColor: Colors.light.transparent,borderRadius: 16,padding: MarginHW.MarginH4,},
+    text:{fontFamily: Fonts.jakartaMedium,marginTop: MarginHW.MarginH4,}
+})
