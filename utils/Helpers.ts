@@ -1,6 +1,7 @@
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 import { Share } from 'react-native';
+// import RTNMyToast from 'rtn-my-toast/js/NativeMyToast';
 
 export const downloadImage = async (imageUrl: string) => {
   try {
@@ -21,6 +22,9 @@ export const downloadImage = async (imageUrl: string) => {
   }
 };
 
+// export const toastHelper = async(msg:string)=> {
+//     await RTNMyToast.showToast(msg);
+//   }  
 
  export const shareImage = async (imageUrl: string) => {
     try {

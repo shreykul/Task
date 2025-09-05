@@ -34,6 +34,7 @@ const ZoomedPic = () => {
   const [currentIndex, setCurrentIndex] = useState(
     initialIndex >= 0 ? initialIndex : 0,
   );
+  console.log("Current Index:", data);
   const [immersive, setImmersive] = useState(false);
   const [highLoaded, setHighLoaded] = useState(false);
   const item = data[currentIndex];

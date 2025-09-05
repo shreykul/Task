@@ -26,6 +26,14 @@ export default function RootLayout() {
     // Async font loading only occurs in development.
     return null;
   }
+  const linking = {
+    prefixes: ['myapp://'],
+    config: {
+      screens: {
+        ZoomedPic: 'event/:eventId/image/:imageId',
+      },
+    },
+  };
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
