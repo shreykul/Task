@@ -2,7 +2,8 @@ import { handleNavigation } from "@/app/_layout";
 import { Colors } from "@/constants/Colors";
 import { Fonts } from "@/constants/Fonts";
 import MarginHW from "@/utils/MarginHW";
-import { ImageResponse, ImageType } from "@/utils/types";
+import { addFavorite, removeFavorite } from "@/utils/StorageHelper";
+import { ImageType } from "@/utils/types";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { Skeleton } from "moti/skeleton";
@@ -15,14 +16,30 @@ const ImageCard = ({
   item,
   navigation,
   data,
+  favorites,
+  refreshFavorites,
 }: {
   item: ImageType;
   navigation: any;
-  data: ImageResponse;
+  data: ImageType[];
+  favorites: ImageType[];
+  refreshFavorites: () => void;
 }) => {
   const { width } = Dimensions.get("screen");
   const cardWidth = width / 2 - 15;
   const [loaded, setLoaded] = useState(false);
+  const isFavorite = favorites?.some((fav) => fav.id === item.id);
+
+  const toggleFavorite = async () => {
+    if (isFavorite) {
+      console.log("Removing from favorites:", item);
+      await removeFavorite(item.id);
+    } else {
+      console.log("Adding to favorites:", item);
+      await addFavorite(item);
+    }
+    refreshFavorites();
+  };
 
   return (
     <ThemedView style={{ width: cardWidth, margin: 5 }}>
@@ -45,7 +62,7 @@ const ImageCard = ({
             colors={["#808080", "#f5f5f5"]}
           >
             <Image
-              source={{ uri: item.thumbnail_url }}
+              source={{ uri: item.thumbnailUrl }}
               style={Styles.imageStyles}
               contentFit="cover"
               onLoadEnd={() => setLoaded(true)}
@@ -55,9 +72,13 @@ const ImageCard = ({
           </Skeleton>
           <TouchableOpacity
             style={Styles.button}
-            onPress={() => console.log("Favorite pressed:", item.id)}
+            onPress={() => toggleFavorite()}
           >
-            <MaterialIcons name="favorite-border" size={20} color="white" />
+            <MaterialIcons
+              name={isFavorite ? "favorite" : "favorite-border"}
+              size={20}
+              color="white"
+            />
           </TouchableOpacity>
         </ThemedView>
       </TouchableOpacity>

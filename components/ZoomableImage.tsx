@@ -30,9 +30,9 @@ const ZoomableImage = ({
       <GestureDetector gesture={composedGesture}>
         <Animated.View style={[{ flex: 1 }, imageSwipeStyle]}>
           <Zoom>
-            <Image source={{ uri: item?.med_url }} style={styles.imageStyles} />
+            <Image source={{ uri: item?.mediumUrl }} style={styles.imageStyles} />
             <Image
-              source={{ uri: item?.high_url }}
+              source={{ uri: item?.highUrl }}
               style={styles.highStyles}
               onLoad={() => setHighLoaded(true)}
             />

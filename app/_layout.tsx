@@ -8,11 +8,29 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 
-import { useColorScheme } from "@/hooks/useColorScheme";
+import {
+  ThemeProviderCustom,
+  useThemeCustom,
+} from "@/components/ui/theme-context";
 import { NavProps } from "@/utils/types";
 
+function AppNavigator() {
+  const { theme } = useThemeCustom();
+
+  return (
+    <ThemeProvider value={theme === "dark" ? DarkTheme : DefaultTheme}>
+      <Stack>
+        <Stack.Screen name="screens" options={{ headerShown: false }} />
+        <Stack.Screen name="ZoomedPic" options={{ headerShown: false }} />
+        <Stack.Screen name="Setting" options={{ headerShown: false }} />
+        <Stack.Screen name="+not-found" />
+      </Stack>
+      <StatusBar style={theme === "dark" ? "light" : "dark"} />
+    </ThemeProvider>
+  );
+}
+
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     JakartaBold: require("../assets/fonts/PlusJakartaSans-Bold.ttf"),
@@ -23,27 +41,13 @@ export default function RootLayout() {
   });
 
   if (!loaded) {
-    // Async font loading only occurs in development.
     return null;
   }
-  const linking = {
-    prefixes: ['myapp://'],
-    config: {
-      screens: {
-        ZoomedPic: 'event/:eventId/image/:imageId',
-      },
-    },
-  };
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="screens" options={{ headerShown: false }} />
-        <Stack.Screen name="ZoomedPic" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
-    </ThemeProvider>
+    <ThemeProviderCustom>
+      <AppNavigator />
+    </ThemeProviderCustom>
   );
 }
 

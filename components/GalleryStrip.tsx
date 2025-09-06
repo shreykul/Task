@@ -15,7 +15,7 @@ const GalleryStrip = ({
   return (
     <ThemedView style={[Styles.container, isActive && Styles.activeBorder]}>
       <Image
-        source={{ uri: item.thumbnail_url }}
+        source={{ uri: item.thumbnailUrl }}
         style={Styles.imageStyles}
         contentFit="cover"
       />

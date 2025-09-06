@@ -1,15 +1,12 @@
-export interface ImageType {
-    id: string;
-    name: string;
-    description: string;
-    thumbnail_url: string;
-    med_url: string;
-    high_url: string;
-    image_url: string;
-    category: string;
-    created_at: string;
-    updated_at: string;
-}
+export type ImageType = {
+  id: string;
+  name: string;
+  width: number;
+  height: number;
+  thumbnailUrl: string;
+  mediumUrl: string;
+  highUrl: string;
+};
 export interface ImageResponse {
   images: ImageType[];
   [key: string]: any;
@@ -22,4 +19,4 @@ export type NavProps ={
   passProps?: object;
 }
 
-export type HeaderProps = {title:string,back?:boolean,navigation: any;}
+export type HeaderProps = {title:string,back?:boolean,navigation: any;settings?:boolean}

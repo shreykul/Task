@@ -6,13 +6,16 @@ import { Fonts } from "@/constants/Fonts";
 import { useImageList } from "@/hooks/useImageList";
 import HWSize from "@/utils/HWSize";
 import MarginHW from "@/utils/MarginHW";
+import { getFavorites } from "@/utils/StorageHelper";
 import { ImageType } from "@/utils/types";
 import { LegendList } from "@legendapp/list";
 import { useNavigation } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { Dimensions, StyleSheet, TouchableOpacity } from "react-native";
 const PAGE_SIZE = 40;
+const {height, width} = Dimensions.get('screen');
 const Home = () => {
+  const estimatedListSize = { width: width, height: height-HWSize.H_Height100 };
   const navigation = useNavigation();
   const [page, setPage] = useState(0);
   const [orderBy, setOrderBy] = useState(2); // 2 for name, 17 for creation date
@@ -23,6 +26,15 @@ const Home = () => {
   const [imageData, setImageData] = useState<ImageType[]>([]);
   const [optionShow, setOptionShow] = useState(false);
   const [orderShow, setOrderShow] = useState(false);
+  const [favorites, setFavorites] = React.useState<ImageType[]>([]);
+  
+  useEffect(() => {
+    getFavs();
+  }, []);
+  const getFavs = async () => {
+    const result = await getFavorites();
+    setFavorites(result);
+  };
   useEffect(() => {
     if (!data) return;
     if (page === 0) {
@@ -44,9 +56,13 @@ const Home = () => {
 
   const renderItem = ({ item }: { item: ImageType }) => {
     return (
-      <ThemedView>
-        <ImageCard data={imageData} navigation={navigation} item={item} />
-      </ThemedView>
+      <ImageCard
+        data={imageData}
+        navigation={navigation}
+        item={item}
+        favorites={favorites}
+        refreshFavorites={getFavs}
+      />
     );
   };
   return (
@@ -54,11 +70,7 @@ const Home = () => {
       <Header navigation={navigation} title="TaskApp" />
       <ThemedView style={{ flex: 1 }}>
         <ThemedView
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
+          style={Styles.mainSortView}
         >
           <TouchableOpacity
             style={Styles.sortView}
@@ -79,14 +91,18 @@ const Home = () => {
           indicatorStyle="black"
           data={imageData}
           renderItem={renderItem}
-          estimatedItemSize={120}
+          recycleItems
+          estimatedListSize={estimatedListSize}
+          extraData={favorites}
           keyExtractor={(item) => String(item.id)}
           numColumns={2}
+          drawDistance={estimatedListSize.height * 2}
+          waitForInitialLayout
           columnWrapperStyle={{ columnGap: MarginHW.MarginW10 }}
           contentContainerStyle={{ padding: MarginHW.MarginH10 }}
-          recycleItems={true}
           onRefresh={() => {
             setPage(0);
+            getFavs();
           }}
           refreshing={loading}
           onEndReached={() => {
@@ -196,10 +212,13 @@ export default Home;
 
 const Styles = StyleSheet.create({
   main: { flex: 1 },
+  mainSortView: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
   sortView: {
     borderWidth: 0.5,
-    width: HWSize.W_Width110,
-    borderColor: "black",
     marginHorizontal: MarginHW.MarginH10,
     padding: MarginHW.MarginH8,
     borderRadius: 8,
@@ -209,8 +228,6 @@ const Styles = StyleSheet.create({
   },
   sortOrderView: {
     borderWidth: 0.5,
-    width: HWSize.W_Width120,
-    borderColor: "black",
     marginHorizontal: MarginHW.MarginH10,
     padding: MarginHW.MarginH8,
     borderRadius: 8,
@@ -232,7 +249,7 @@ const Styles = StyleSheet.create({
   orderView: {
     position: "absolute",
     marginVertical: HWSize.H_Height140,
-    right: 20,
+    right: MarginHW.MarginW20,
     backgroundColor: "rgba(0,0,0,0.5)",
     justifyContent: "center",
     alignItems: "center",

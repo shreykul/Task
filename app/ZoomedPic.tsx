@@ -7,6 +7,7 @@ import { Fonts } from "@/constants/Fonts";
 import { Strings } from "@/constants/Strings";
 import { downloadImage, shareImage } from "@/utils/Helpers";
 import MarginHW from "@/utils/MarginHW";
+import { addFavorite, isFavorite, removeFavorite } from "@/utils/StorageHelper";
 import { ImageType } from "@/utils/types";
 import { MaterialIcons } from "@expo/vector-icons";
 import { LegendList, LegendListRef } from "@legendapp/list";
@@ -35,10 +36,17 @@ const ZoomedPic = () => {
     initialIndex >= 0 ? initialIndex : 0,
   );
   console.log("Current Index:", data);
+  const [isFav, setIsFav] = useState(false);
   const [immersive, setImmersive] = useState(false);
   const [highLoaded, setHighLoaded] = useState(false);
   const item = data[currentIndex];
   const listRef = useRef<LegendListRef>(null);
+
+  useEffect(() => {
+    if (item) {
+      checkFavorite(item);
+    }
+  }, [currentIndex]);
 
   useEffect(() => {
     if (listRef.current && currentIndex >= 0) {
@@ -94,6 +102,22 @@ const ZoomedPic = () => {
     };
   });
 
+  const checkFavorite = async (item: ImageType) => {
+    const fav = await isFavorite(item.id);
+    setIsFav(fav);
+  };
+
+  const HandleFav = async (item: ImageType) => {
+    const fav = await isFavorite(item.id);
+    if (fav) {
+      await removeFavorite(item.id);
+      setIsFav(false);
+    } else {
+      await addFavorite(item);
+      setIsFav(true);
+    }
+  };
+
   const imageSwipeStyle = useAnimatedStyle(() => {
     return {
       transform: [{ translateX: translateX.value }],
@@ -125,18 +149,51 @@ const ZoomedPic = () => {
             )}
           />
           <View style={styles.actionView}>
-            <TouchableOpacity style={styles.actionButton} onPress={() => {downloadImage(item.high_url)}}>
-              <MaterialIcons name="download" size={28} color="#fff" style={{marginHorizontal:MarginHW.MarginH16}} />
-              <ThemedText style={styles.actionText}>{Strings.Download}</ThemedText>
-              </TouchableOpacity>
-             <TouchableOpacity style={styles.actionButton}> 
-              <MaterialIcons name="favorite" size={28} color="#fff" style={{marginHorizontal:MarginHW.MarginH16}} />
-             <ThemedText style={styles.actionText}>{Strings.Favorite}</ThemedText>
-             </TouchableOpacity>
-             <TouchableOpacity style={styles.actionButton} onPress={() => {shareImage(item.high_url); console.log(item.high_url)}}>
-              <MaterialIcons name="share" size={28} color="#fff" style={{marginHorizontal:MarginHW.MarginH16}} />
+            <TouchableOpacity
+              style={styles.actionButton}
+              onPress={() => {
+                downloadImage(item.high_url);
+              }}
+            >
+              <MaterialIcons
+                name="download"
+                size={28}
+                color="#fff"
+                style={{ marginHorizontal: MarginHW.MarginH16 }}
+              />
+              <ThemedText style={styles.actionText}>
+                {Strings.Download}
+              </ThemedText>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.actionButton}
+              onPress={() => HandleFav(item)}
+            >
+              <MaterialIcons
+                name="favorite"
+                size={28}
+                color={isFav ? "pink" : "#fff"}
+                style={{ marginHorizontal: MarginHW.MarginH16 }}
+              />
+              <ThemedText style={styles.actionText}>
+                {Strings.Favorite}
+              </ThemedText>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.actionButton}
+              onPress={() => {
+                shareImage(item.high_url);
+                console.log(item.high_url);
+              }}
+            >
+              <MaterialIcons
+                name="share"
+                size={28}
+                color="#fff"
+                style={{ marginHorizontal: MarginHW.MarginH16 }}
+              />
               <ThemedText style={styles.actionText}>{Strings.Share}</ThemedText>
-              </TouchableOpacity>
+            </TouchableOpacity>
           </View>
         </Animated.View>
       </ThemedView>
@@ -163,11 +220,15 @@ const styles = StyleSheet.create({
     paddingVertical: MarginHW.MarginH20,
     backgroundColor: "rgba(0,0,0,0.3)",
   },
-  actionView:{
-    flexDirection:'row',
-    justifyContent:'space-evenly',
-    marginTop:MarginHW.MarginH8,
+  actionView: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    marginTop: MarginHW.MarginH8,
   },
-  actionButton:{alignItems:'center'},
-  actionText:{fontFamily:Fonts.jakartaMedium,fontSize:14,alignSelf:'center'}
+  actionButton: { alignItems: "center" },
+  actionText: {
+    fontFamily: Fonts.jakartaMedium,
+    fontSize: 14,
+    alignSelf: "center",
+  },
 });

@@ -2,5 +2,7 @@ export const Strings = {
     Download:"Download",
     Favorite:"Favorite",
     Share:"Share",
-    Image:"Image"
+    Image:"Image",
+    Toggle:"Toggle Dark Mode",
+    System:"System Default",
 }

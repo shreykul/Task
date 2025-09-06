@@ -15,7 +15,7 @@ export function useImageList(page: number, pageSize: number,order_by:number=2,or
       setError(null);
       try {
         const res = await fetchImages(page, pageSize, order_by, order, controller.signal);
-        setData(res.data.image_list ?? []);
+        setData(res ?? []);
       } catch (err: any) {
         if (err.name !== "CanceledError") {
           setError(err.message);
