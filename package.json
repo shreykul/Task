@@ -5,14 +5,16 @@
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "lint": "expo lint"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
     "@legendapp/list": "^2.0.0-beta.7",
+    "@react-native-async-storage/async-storage": "2.1.2",
+    "@react-native-community/cli": "^20.0.1",
     "@react-navigation/bottom-tabs": "^7.3.10",
     "@react-navigation/elements": "^2.3.8",
     "@react-navigation/native": "^7.1.6",
@@ -45,8 +47,8 @@
     "react-native-web": "~0.20.0",
     "react-native-webview": "13.13.5",
     "react-native-zoom-reanimated": "^1.4.10",
-    "undefined": "./RTNMyToast",
-    "@react-native-async-storage/async-storage": "2.1.2"
+    "rtn-my-toast": "file:RTNMyToast",
+    "@react-native-community/netinfo": "11.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

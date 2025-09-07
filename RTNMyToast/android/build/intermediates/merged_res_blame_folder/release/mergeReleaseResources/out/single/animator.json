@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "com.rtnmytoast.rtn-my-toast-release-27:/animator/fragment_open_enter.xml",
+        "source": "com.rtnmytoast.rtn-my-toast-fragment-1.5.4-6:/animator/fragment_open_enter.xml"
+    },
+    {
+        "merged": "com.rtnmytoast.rtn-my-toast-release-27:/animator/fragment_fade_exit.xml",
+        "source": "com.rtnmytoast.rtn-my-toast-fragment-1.5.4-6:/animator/fragment_fade_exit.xml"
+    },
+    {
+        "merged": "com.rtnmytoast.rtn-my-toast-release-27:/animator/fragment_close_enter.xml",
+        "source": "com.rtnmytoast.rtn-my-toast-fragment-1.5.4-6:/animator/fragment_close_enter.xml"
+    },
+    {
+        "merged": "com.rtnmytoast.rtn-my-toast-release-27:/animator/fragment_open_exit.xml",
+        "source": "com.rtnmytoast.rtn-my-toast-fragment-1.5.4-6:/animator/fragment_open_exit.xml"
+    },
+    {
+        "merged": "com.rtnmytoast.rtn-my-toast-release-27:/animator/fragment_fade_enter.xml",
+        "source": "com.rtnmytoast.rtn-my-toast-fragment-1.5.4-6:/animator/fragment_fade_enter.xml"
+    },
+    {
+        "merged": "com.rtnmytoast.rtn-my-toast-release-27:/animator/fragment_close_exit.xml",
+        "source": "com.rtnmytoast.rtn-my-toast-fragment-1.5.4-6:/animator/fragment_close_exit.xml"
+    }
+]

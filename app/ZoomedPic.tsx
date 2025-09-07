@@ -152,7 +152,7 @@ const ZoomedPic = () => {
             <TouchableOpacity
               style={styles.actionButton}
               onPress={() => {
-                downloadImage(item.high_url);
+                downloadImage(item.highUrl);
               }}
             >
               <MaterialIcons

@@ -97,7 +97,7 @@ const Styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: "#e1e1e1",
   },
-  background: { position: "relative", backgroundColor: "#f0f0f0" },
+  background: { position: "relative", backgroundColor: "#f0f0f0",},
   button: {
     position: "absolute",
     top: MarginHW.MarginH8,
