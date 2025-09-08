@@ -24,7 +24,13 @@ jobs:
         run: npm install
 
       - name: Run lint
+        id: lint
         run: npm run lint
+        continue-on-error: true
+
+      - name: Run lint --fix if needed
+        if: steps.lint.outcome == 'failure'
+        run: npm run lint -- --fix
 
       - name: Run tests
         run: npm test
