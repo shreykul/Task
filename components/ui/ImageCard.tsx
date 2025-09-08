@@ -44,6 +44,7 @@ const ImageCard = ({
   return (
     <ThemedView style={{ width: cardWidth, margin: 5 }}>
       <TouchableOpacity
+      testID="image-card"
         onPress={() =>
           handleNavigation({
             type: "push",
@@ -71,6 +72,7 @@ const ImageCard = ({
             />
           </Skeleton>
           <TouchableOpacity
+          testID="favorite-button" 
             style={Styles.button}
             onPress={() => toggleFavorite()}
           >
